@@ -20,7 +20,7 @@ services:
     volumes:
       - /mydata/redis/data:/data #数据文件挂载
     ports:
-    - 6379:6379
+      - 6379:6379
   nginx:
     image: nginx:1.10
     container_name: nginx
