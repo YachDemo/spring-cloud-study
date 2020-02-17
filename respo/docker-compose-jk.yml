@@ -1,0 +1,14 @@
+# /data/gitlab 是自定义映射gitlab存放配置参数及数据的目录，可以修改成自己需要的目录
+version: '2'
+services:
+  jenkins:
+    image: gitlab/gitlab-ce:12.0.3-ce.0
+    container_name: gitlab
+    ports:
+      - "9022:9022"
+      - "9080:80"
+    volumes:
+      - "/data/gitlab/cfg:/etc/gitlab"
+      - "/data/gitlab/logs:/var/log/gitlab"
+      - "/data/gitlab/data:/var/opt/gitlab"
+    restart: always

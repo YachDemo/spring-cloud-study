@@ -9,6 +9,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 public class ServiceHiApplication {
 
     public static void main(String[] args) {
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
         SpringApplication.run(ServiceHiApplication.class, args);
     }
 
