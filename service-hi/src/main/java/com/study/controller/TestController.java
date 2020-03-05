@@ -163,14 +163,18 @@ public class TestController {
         sourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
         //执行查询
         sourceBuilder.query(chineseAndPinYinSearch(content));
-        System.out.println(sourceBuilder);
+//        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+//                .withQuery(chineseAndPinYinSearch(content))
+//                .build();
+//        Page<Item> list = itemRepository.search(searchQuery);
+//        System.out.println(sourceBuilder);
 //        指定索引库和类型
         SearchRequest searchRequest = new SearchRequest(INDEX);
 //        searchRequest.types(TYPE);
         searchRequest.source(sourceBuilder);
         try {
-            return Result.success(client.search(searchRequest));
-        } catch (IOException e) {
+//            return Result.success(list.getContent());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

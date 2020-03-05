@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.DemoMapper">
+
+    <insert id="insertFetch" parameterType="list">
+        INSERT INTO t_demo_info (
+        id, username, password,
+        email, 
+        phone,
+        is_bind,
+        create_time,
+        update_time) 
+        VALUES
+        <foreach collection="list" item="demo" index="index" separator=",">
+            (
+            #{demo.id},
+            #{demo.username},
+            #{demo.password},
+            #{demo.email},
+            #{demo.phone},
+            #{demo.isBind},
+            #{demo.createTime,jdbcType=BIGINT},
+            #{demo.updateTime,jdbcType=BIGINT}
+            )
+        </foreach>
+    </insert>
+</mapper>

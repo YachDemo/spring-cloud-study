@@ -1,0 +1,37 @@
+{
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "title": {
+      "type": "text",
+      "analyzer": "ikIndexAnalyzer",
+      "fields": {
+        "ngram": {
+          "type": "text",
+          "analyzer": "ngramIndexAnalyzer"
+        },
+        "SPY": {
+          "type": "text",
+          "analyzer": "pinyiSimpleIndexAnalyzer"
+        },
+        "FPY": {
+          "type": "text",
+          "analyzer": "pinyiFullIndexAnalyzer"
+        }
+      }
+    },
+    "category": {
+      "type": "text"
+    },
+    "brand": {
+      "type": "text"
+    },
+    "price": {
+      "type": "double"
+    },
+    "images": {
+      "type": "keyword"
+    }
+  }
+}
