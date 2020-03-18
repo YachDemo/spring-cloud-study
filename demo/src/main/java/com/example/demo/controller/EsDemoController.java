@@ -5,11 +5,11 @@ import com.example.demo.entity.Item;
 import com.example.demo.service.BaseElasticService;
 import com.example.demo.utils.ChineseToPinYinUtil;
 import com.example.demo.utils.Result;
-import org.elasticsearch.index.query.DisMaxQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +30,7 @@ public class EsDemoController {
 
     @RequestMapping("/addIndex")
     public String addIndex(){
-        baseElasticService.createIndex("item","{\n" +
+        baseElasticService.createIndex("shop","{\n" +
                 "  \"properties\": {\n" +
                 "    \"id\": {\n" +
                 "      \"type\": \"integer\"\n" +
@@ -183,21 +183,30 @@ public class EsDemoController {
 
     @RequestMapping("/insertBatch")
     public String insertBatch(){
-        List<Item> items = new ArrayList<>();
-        Item item = new Item("坚果手机R1", "手机", "锤子", 3999.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
-        item.setId("1");
-        items.add(item);
-        item = new Item("华为META20", "手机", "华为", 4999.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
-        item.setId("2");
-        items.add(item);
-        item = new Item("iPhone X", "手机", "iPhone", 5100.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
-        item.setId("3");
-        items.add(item);
-        item = new Item( "iPhone XS", "手机", "iPhone", 5999.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
-        item.setId("4");
-        items.add(item);
-        baseElasticService.insertBatch("item",items);
+//        List<Item> items = new ArrayList<>();
+//        Item item = new Item("坚果手机R1", "手机", "锤子", 3999.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
+//        item.setId("1");
+//        items.add(item);
+//        item = new Item("华为META20", "手机", "华为", 4999.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
+//        item.setId("2");
+//        items.add(item);
+//        item = new Item("iPhone X", "手机", "iPhone", 5100.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
+//        item.setId("3");
+//        items.add(item);
+//        item = new Item( "iPhone XS", "手机", "iPhone", 5999.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
+//        item.setId("4");
+//        items.add(item);
+//        baseElasticService.insertBatch("item",items);
         return "操作成功";
+    }
+
+
+    @RequestMapping("inster")
+    public String inster(){
+//        Item item = new Item("小米手机10", "手机", "小米", 3999.00, "https://img12.360buyimg.com/n1/s450x450_jfs/t1/14081/40/4987/124705/5c371b20E53786645/c1f49cd69e6c7e6a.jpg");
+//        item.setId("5");
+//        baseElasticService.insertOrUpdateOne("item",item);
+        return "操作成功!";
     }
 
     @RequestMapping("searchPy")
@@ -209,11 +218,20 @@ public class EsDemoController {
 //        // 结果开始处
         sourceBuilder.from((1-1)*10);
 //        // 查询结果终止处
-        sourceBuilder.size(1);
+        sourceBuilder.size(100);
 //        // 查询的等待时间
 //        sourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
 //        //执行查询
+        GeoDistanceQueryBuilder distanceQueryBuilder = new GeoDistanceQueryBuilder("location");
+        distanceQueryBuilder.point(22.240840987140615,113.54850899999995);
+        // 定义查询单位 （公里）
+        distanceQueryBuilder.distance(1000, DistanceUnit.KILOMETERS);
+        sourceBuilder.postFilter(distanceQueryBuilder);
         sourceBuilder.query(chineseAndPinYinSearch(content));
+        GeoDistanceSortBuilder distanceSortBuilder = new GeoDistanceSortBuilder("location",22.240840987140615,113.54850899999995);
+        distanceSortBuilder.unit(DistanceUnit.KILOMETERS);
+        distanceSortBuilder.order(SortOrder.ASC);
+        sourceBuilder.sort(distanceSortBuilder);
         List<Item> list = baseElasticService.search("item",sourceBuilder,Item.class);
         try {
             return Result.success(list);
@@ -248,9 +266,9 @@ public class EsDemoController {
          * 拼音简写包含匹配，如 njdl可以查出 "城市公牛 南京东路店"，虽然非南京东路开头
          * 权重*0.8
          */
-        QueryBuilder  pingYinSampleContainQueryBuilder=null;
-        if(firstChar.length()>1){
-            pingYinSampleContainQueryBuilder=QueryBuilders.wildcardQuery("title.SPY", "*"+firstChar+"*").boost(0.8f);
+        QueryBuilder pingYinSampleContainQueryBuilder = null;
+        if(firstChar.length() > 1){
+            pingYinSampleContainQueryBuilder = QueryBuilders.wildcardQuery("title.SPY", "*"+firstChar+"*").boost(0.8f);
         }
 
         /**
@@ -262,14 +280,14 @@ public class EsDemoController {
          */
         QueryBuilder pingYinFullQueryBuilder=null;
         if(words.length()>1){
-            pingYinFullQueryBuilder=QueryBuilders.matchPhraseQuery("title.FPY", words).analyzer("pinyiFullSearchAnalyzer");
+            pingYinFullQueryBuilder = QueryBuilders.matchPhraseQuery("title.FPY", words).analyzer("pinyiFullSearchAnalyzer");
         }
 
         /**
          * 完整包含关键字查询(优先级最低，只有以上四种方式查询无结果时才考虑）
          * 权重*0.8
          */
-        QueryBuilder containSearchBuilder=QueryBuilders.matchQuery("title", words).analyzer("ikSearchAnalyzer").minimumShouldMatch("100%");
+        QueryBuilder containSearchBuilder = QueryBuilders.matchQuery("title", words).analyzer("ikSearchAnalyzer").minimumShouldMatch("100%");
 
         disMaxQueryBuilder
                 .add(normSearchBuilder)
@@ -277,10 +295,10 @@ public class EsDemoController {
                 .add(containSearchBuilder);
 
         //以下两个对性能有一定的影响，故作此判定，单个字符不执行此类搜索
-        if(pingYinFullQueryBuilder!=null){
+        if(pingYinFullQueryBuilder != null){
             disMaxQueryBuilder.add(pingYinFullQueryBuilder);
         }
-        if(pingYinSampleContainQueryBuilder!=null){
+        if(pingYinSampleContainQueryBuilder != null){
             disMaxQueryBuilder.add(pingYinSampleContainQueryBuilder);
         }
 

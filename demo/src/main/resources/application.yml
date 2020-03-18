@@ -1,0 +1,53 @@
+server:
+  port: 8070
+spring:
+  redis:
+    jedis:
+      pool:
+        max-active: 200
+        max-idle: 100
+        max-wait: -1s
+        min-idle: 5
+    cluster:
+#      nodes: 172.21.0.3:6380,172.21.0.2:6381,172.21.0.6:6382,172.21.0.5:6383,172.21.0.7:6384,172.21.0.4:6385
+      nodes: 192.168.0.127:6380,192.168.0.127:6381,192.168.0.127:6382,192.168.0.127:6383,192.168.0.127:6384,192.168.0.127:6385
+    timeout: 500
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      stat-view-servlet:
+        login-username: admin
+        login-password: 123456
+      validation-query: SELECT 1
+      initial-size: 10
+      min-idle: 10
+      max-active: 200
+      min-evictable-idle-time-millis: 180000
+      test-on-borrow: false
+      test-while-idle: true
+      remove-abandoned: true
+      remove-abandoned-timeout: 1800
+      log-abandoned: true
+      pool-prepared-statements: true
+      max-open-prepared-statements: 100
+    dynamic:
+      datasource:
+        master:
+          username: root
+          password: root
+          driver-class-name: com.mysql.jdbc.Driver
+          jdbc-url: jdbc:mysql://192.168.0.127:3306/tikbee?useUnicode=true&characterEncoding=utf8&useSSL=false&tinyInt1isBit=true&allowPublicKeyRetrieval=true
+        slave1:
+          username: root
+          password: root
+          driver-class-name: com.mysql.jdbc.Driver
+          jdbc-url: jdbc:mysql://192.168.0.127:3307/tikbee?useUnicode=true&characterEncoding=utf8&useSSL=false&tinyInt1isBit=true&allowPublicKeyRetrieval=true
+#  elasticsearch:
+#    rest:
+#      uris: http://192.168.0.198:9200,http://192.168.0.198:9201,http://192.168.0.198:9202
+#      uris: http://192.168.0.127:9200
+es:
+  hosts: 192.168.0.198:9200,192.168.0.198:9201,192.168.0.198:9202
+#  hosts: 125.88.36.99:9200,125.88.36.100:9200,125.88.36.101:9200
+  username: elastic
+  password: 168mNBwXpECcN2i0sHLB2XGgimZfGciXuYpcHgYwTKd8Km84hw6ij5LoSs2nOl4SJpK

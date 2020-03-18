@@ -32,9 +32,6 @@
     },
     "images": {
       "type": "keyword"
-    },
-    "location": {
-      "type": "geo_point"
     }
   }
 }

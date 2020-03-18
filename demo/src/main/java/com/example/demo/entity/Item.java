@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.elasticsearch.common.geo.GeoPoint;
 
 /**
  * 
@@ -20,19 +21,16 @@ public class Item extends BaseElasticEntity {
     /**
      * 标题
      */
-
     private String title;
 
     /**
      * 分类
      */
-
     private String category;
 
     /**
      * 品牌
      */
-
     private String brand;
 
     /**
@@ -44,4 +42,6 @@ public class Item extends BaseElasticEntity {
      * 图片地址
      */
     private String images;
+
+    private GeoPoint location;
 }

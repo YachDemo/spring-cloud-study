@@ -1,19 +1,42 @@
 package com.example.demo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-
 /**
- * 
+ * Elastic基类
  * @author YanCh
  * Create by 2020-03-05 10:13
  **/
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Accessors(chain = true)
 public class BaseElasticEntity {
+    /**
+     * id
+     */
     private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * es索引名称（项目启动时初始化创建索引）
+     */
+    public final static String[] INDEX_NAMES = {
+            "item"
+    };
+
+    /**
+     * es索引设置相对路径
+     */
+    public final static String[] INDEX_SETTING_PATHS = {
+            "/json/base-setting.json"
+    };
+
+    /**
+     *
+     */
+    public final static String[] INDEX_MAPPING_PATHS = {
+            "/json/item-mapping.json"
+    };
 }

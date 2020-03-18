@@ -25,6 +25,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,7 +49,7 @@ public class BaseElasticService<T extends BaseElasticEntity> {
      */
     public void createIndex(String idxName,String idxSQL,String setting){
         try {
-            if (!this.indexExist(idxName)) {
+            if (this.isExistsIndex(idxName)) {
                 log.error(" idxName={} 已经存在,idxSql={}",idxName,idxSQL);
                 return;
             }
@@ -62,7 +63,6 @@ public class BaseElasticService<T extends BaseElasticEntity> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(0);
         }
     }
 
@@ -162,6 +162,8 @@ public class BaseElasticService<T extends BaseElasticEntity> {
             SearchHit[] hits = response.getHits().getHits();
             List<T> res = new ArrayList<>(hits.length);
             for (SearchHit hit : hits) {
+                BigDecimal geoDis = BigDecimal.valueOf((double) hit.getSortValues()[0]);
+                System.out.println(geoDis);
                 res.add(new GsonBuilder().create().fromJson(hit.getSourceAsString(), c));
             }
             return res;
