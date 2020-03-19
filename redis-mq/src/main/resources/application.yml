@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: redis-mq
+  redis:
+    jedis:
+      pool: #¡¥Ω”≥ÿ…Ë÷√
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+    cluster:
+      nodes: 192.168.0.127:6380,192.168.0.127:6381,192.168.0.127:6382,192.168.0.127:6383,192.168.0.127:6384,192.168.0.127:6385
+server:
+  port: 8085
