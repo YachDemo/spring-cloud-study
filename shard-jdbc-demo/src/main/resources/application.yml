@@ -1,0 +1,164 @@
+spring:
+  # shard-jdbc 读写分离配置（仅支持一主多从的结构）
+  shardingsphere:
+    # 主从配置
+    masterslave:
+      name: ms # 主从数据源名称
+      load-balance-algorithm-type: round_robin # 负载均衡算法 ROUND_ROBIN，RANDOM
+      master-data-source-name: master # 主库名称
+      slave-data-source-names: slave0 # 从库名称列表
+    # 其他属性
+    props:
+      # 是否在启动时检查分表元数据一致性，默认值: false
+      check:
+        table:
+          metadata:
+            enabled: false
+      # 工作线程数量，默认值: CPU核数
+      # executor:
+      #  size: 8
+      # 是否开启SQL显示，默认值: false
+      sql:
+        show: true
+    # 数据源配置
+    datasource:
+      # 数据源名称，多数据源以逗号分隔
+      names: master,slave0
+      # 主库的datasource配置
+      master:
+        # 指定使用druid连接池
+        type: com.alibaba.druid.pool.DruidDataSource
+        # 默认连接配置
+        url: jdbc:mysql://125.88.36.99:33668/tikbee?useUnicode=true&characterEncoding=utf8&useSSL=false&tinyInt1isBit=true&allowPublicKeyRetrieval=true
+        username: TikBee
+        password: B168QgiwZWgPh9VtGYr1DqIp9II74KXO6HgQuKO7cSS4ZuWEkXSOaMYcfvmFDbUVcLrc
+        # driver-class-name: com.mysql.jdbc.Driver
+        driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8 包路径变了
+        # druid专属的属性配置
+        platform: mysql
+        #    type: com.alibaba.druid.pool.DruidDataSource
+        # 下面为连接池的补充设置，应用到上面所有数据源中
+        # 初始化大小，最小，最大
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+        # 配置获取连接等待超时的时间
+        maxWait: 60000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        timeBetweenEvictionRunsMillis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdleTimeMillis: 30000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        # 打开PSCache，并且指定每个连接上PSCache的大小
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+        filters: stat,wall,slf4j
+        # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+        # 合并多个DruidDataSource的监控数据
+        #useGlobalDataSourceStat: true
+        web-stat-filter:
+          enabled: false
+          url-pattern: /*
+          exclusions: '*.gif,*.png,*.jpg,*.html,*.js,*.css,*.ico,/druid/*'
+        # Druid StatViewServlet配置 可视化web界面
+        stat-view-servlet:
+          enabled: false
+          url-pattern: /druid/*
+          reset-enable: true
+          login-username: admin
+          login-password: admin
+          # 配置日志输出
+        filter:
+          slf4j:
+            enabled: false
+            statement-create-after-log-enabled: false
+            statement-close-after-log-enabled: false
+            result-set-open-after-log-enabled: false
+            result-set-close-after-log-enabled: false
+      # 从库0的datasource配置
+      slave0:
+        # 指定使用druid连接池
+        type: com.alibaba.druid.pool.DruidDataSource
+        # 默认连接配置
+        url: jdbc:mysql://125.88.36.100:33668/tikbee?useUnicode=true&characterEncoding=utf8&useSSL=false&tinyInt1isBit=true&allowPublicKeyRetrieval=true
+        username: TikBee
+        password: B168QgiwZWgPh9VtGYr1DqIp9II74KXO6HgQuKO7cSS4ZuWEkXSOaMYcfvmFDbUVcLrc
+        # driver-class-name: com.mysql.jdbc.Driver
+        driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8 包路径变了
+        # druid专属的属性配置
+        platform: mysql
+        #    type: com.alibaba.druid.pool.DruidDataSource
+        # 下面为连接池的补充设置，应用到上面所有数据源中
+        # 初始化大小，最小，最大
+        initialSize: 5
+        minIdle: 5
+        maxActive: 20
+        # 配置获取连接等待超时的时间
+        maxWait: 60000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        timeBetweenEvictionRunsMillis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdleTimeMillis: 30000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        # 打开PSCache，并且指定每个连接上PSCache的大小
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+        filters: stat,wall,slf4j
+        # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+        # 合并多个DruidDataSource的监控数据
+        #useGlobalDataSourceStat: true
+        web-stat-filter:
+          enabled: false
+          url-pattern: /*
+          exclusions: '*.gif,*.png,*.jpg,*.html,*.js,*.css,*.ico,/druid/*'
+        # Druid StatViewServlet配置 可视化web界面
+        stat-view-servlet:
+          enabled: false
+          url-pattern: /druid/*
+          reset-enable: true
+          login-username: admin
+          login-password: admin
+          # 配置日志输出
+        filter:
+          slf4j:
+            enabled: false
+            statement-create-after-log-enabled: false
+            statement-close-after-log-enabled: false
+            result-set-open-after-log-enabled: false
+            result-set-close-after-log-enabled: false
+    # 读写分离规则
+    sharding:
+      master-slave-rules:
+        ms: # 主从数据源名称
+          master-data-source-name: master  #主库数据源名称
+          slave-data-source-names[0]: slave0 #从库数据源名称列表
+#          slave-data-source-names[1]: slave1 #从库数据源名称列表
+          # load-balance-algorithm-class-name: #从库负载均衡算法类名称。该类需实现MasterSlaveLoadBalanceAlgorithm接口且提供无参数构造器
+          load-balance-algorithm-type: round_robin #从库负载均衡算法类型，可选值：轮询 ROUND_ROBIN，随机 RANDOM。若`load-balance-algorithm-class-name`存在则忽略该配置
+server:
+  port: 8089
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false
+    cache-enabled: true
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.example.shardjdbcdemo.model
+  global-config:
+    db-config:
+      field-strategy: not_empty
+      id-type: input
+
+
+
+

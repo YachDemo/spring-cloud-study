@@ -33,7 +33,20 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.elasticsearch.plugin</groupId>-->
+<!--            <artifactId>x-pack-sql-jdbc</artifactId>-->
+<!--            <version>7.5.2</version>-->
+<!--        </dependency>-->
     </dependencies>
+
+
+    <repositories>
+        <repository>
+            <id>elastic.co</id>
+            <url>https://artifacts.elastic.co/maven</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
