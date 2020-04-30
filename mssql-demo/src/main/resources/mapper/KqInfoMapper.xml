@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mssql.mapper.KqInfoMapper">
+  <resultMap id="BaseResultMap" type="com.mssql.model.KqInfo">
+    <!--@mbg.generated-->
+    <!--@Table kq_info-->
+    <id column="kq_ID" jdbcType="VARCHAR" property="kqId" />
+    <result column="kq_Money" jdbcType="OTHER" property="kqMoney" />
+    <result column="kq_Psw" jdbcType="VARCHAR" property="kqPsw" />
+    <result column="kq_YXQ" jdbcType="TIMESTAMP" property="kqYxq" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="fq_mall_name" jdbcType="VARCHAR" property="fqMallName" />
+    <result column="fq_ck_name" jdbcType="VARCHAR" property="fqCkName" />
+    <result column="hx_mall_name" jdbcType="VARCHAR" property="hxMallName" />
+    <result column="hx_ck_name" jdbcType="VARCHAR" property="hxCkName" />
+    <result column="hx_money" jdbcType="OTHER" property="hxMoney" />
+    <result column="hx_person" jdbcType="VARCHAR" property="hxPerson" />
+    <result column="hx_time" jdbcType="TIMESTAMP" property="hxTime" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="creat_person" jdbcType="VARCHAR" property="creatPerson" />
+    <result column="chg_time" jdbcType="TIMESTAMP" property="chgTime" />
+    <result column="chg_person" jdbcType="VARCHAR" property="chgPerson" />
+    <result column="bz_Memo" jdbcType="VARCHAR" property="bzMemo" />
+    <result column="hx_memo" jdbcType="VARCHAR" property="hxMemo" />
+    <result column="kq_name" jdbcType="VARCHAR" property="kqName" />
+    <result column="hx_dh_id" jdbcType="VARCHAR" property="hxDhId" />
+    <result column="use_tj" jdbcType="VARCHAR" property="useTj" />
+    <result column="xf_me" jdbcType="OTHER" property="xfMe" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    kq_ID, kq_Money, kq_Psw, kq_YXQ, [state], fq_mall_name, fq_ck_name, hx_mall_name, 
+    hx_ck_name, hx_money, hx_person, hx_time, creat_time, creat_person, chg_time, chg_person, 
+    bz_Memo, hx_memo, kq_name, hx_dh_id, use_tj, xf_me
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from kq_info
+    where kq_ID = #{kqId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from kq_info
+    where kq_ID = #{kqId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mssql.model.KqInfo">
+    <!--@mbg.generated-->
+    insert into kq_info (kq_ID, kq_Money, kq_Psw, 
+      kq_YXQ, [state], fq_mall_name, 
+      fq_ck_name, hx_mall_name, hx_ck_name, 
+      hx_money, hx_person, hx_time, 
+      creat_time, creat_person, chg_time, 
+      chg_person, bz_Memo, hx_memo, 
+      kq_name, hx_dh_id, use_tj, 
+      xf_me)
+    values (#{kqId,jdbcType=VARCHAR}, #{kqMoney}, #{kqPsw,jdbcType=VARCHAR},
+      #{kqYxq,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, #{fqMallName,jdbcType=VARCHAR}, 
+      #{fqCkName,jdbcType=VARCHAR}, #{hxMallName,jdbcType=VARCHAR}, #{hxCkName,jdbcType=VARCHAR}, 
+      #{hxMoney}, #{hxPerson,jdbcType=VARCHAR}, #{hxTime,jdbcType=TIMESTAMP},
+      #{creatTime,jdbcType=TIMESTAMP}, #{creatPerson,jdbcType=VARCHAR}, #{chgTime,jdbcType=TIMESTAMP}, 
+      #{chgPerson,jdbcType=VARCHAR}, #{bzMemo,jdbcType=VARCHAR}, #{hxMemo,jdbcType=VARCHAR}, 
+      #{kqName,jdbcType=VARCHAR}, #{hxDhId,jdbcType=VARCHAR}, #{useTj,jdbcType=VARCHAR}, 
+      #{xfMe})
+  </insert>
+    <insert id="insertBatch" parameterType="com.mssql.model.KqInfo">
+        <!--@mbg.generated-->
+        insert into kq_info (kq_ID, kq_Money, kq_Psw,
+        kq_YXQ, [state], fq_mall_name,
+        fq_ck_name, hx_mall_name, hx_ck_name,
+        hx_money, hx_person, hx_time,
+        creat_time, creat_person, chg_time,
+        chg_person, bz_Memo, hx_memo,
+        kq_name, hx_dh_id, use_tj,
+        xf_me)
+        values
+        <foreach collection="list" item="user" index="index" separator=",">
+            (#{user.kqId,jdbcType=VARCHAR}, #{user.kqMoney}, #{user.kqPsw},
+            #{user.kqYxq}, #{user.state}, #{user.fqMallName},
+            #{user.fqCkName}, #{user.hxMallName}, #{user.hxCkName},
+            #{user.hxMoney}, #{user.hxPerson}, #{user.hxTime},
+            #{user.creatTime}, #{user.creatPerson}, #{user.chgTime},
+            #{user.chgPerson}, #{user.bzMemo}, #{user.hxMemo},
+            #{user.kqName}, #{user.hxDhId}, #{user.useTj},
+            #{user.xfMe})
+        </foreach>
+
+    </insert>
+  <insert id="insertSelective" parameterType="com.mssql.model.KqInfo">
+    <!--@mbg.generated-->
+    insert into kq_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="kqId != null">
+        kq_ID,
+      </if>
+      <if test="kqMoney != null">
+        kq_Money,
+      </if>
+      <if test="kqPsw != null">
+        kq_Psw,
+      </if>
+      <if test="kqYxq != null">
+        kq_YXQ,
+      </if>
+      <if test="state != null">
+        [state],
+      </if>
+      <if test="fqMallName != null">
+        fq_mall_name,
+      </if>
+      <if test="fqCkName != null">
+        fq_ck_name,
+      </if>
+      <if test="hxMallName != null">
+        hx_mall_name,
+      </if>
+      <if test="hxCkName != null">
+        hx_ck_name,
+      </if>
+      <if test="hxMoney != null">
+        hx_money,
+      </if>
+      <if test="hxPerson != null">
+        hx_person,
+      </if>
+      <if test="hxTime != null">
+        hx_time,
+      </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
+      <if test="creatPerson != null">
+        creat_person,
+      </if>
+      <if test="chgTime != null">
+        chg_time,
+      </if>
+      <if test="chgPerson != null">
+        chg_person,
+      </if>
+      <if test="bzMemo != null">
+        bz_Memo,
+      </if>
+      <if test="hxMemo != null">
+        hx_memo,
+      </if>
+      <if test="kqName != null">
+        kq_name,
+      </if>
+      <if test="hxDhId != null">
+        hx_dh_id,
+      </if>
+      <if test="useTj != null">
+        use_tj,
+      </if>
+      <if test="xfMe != null">
+        xf_me,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="kqId != null">
+        #{kqId,jdbcType=VARCHAR},
+      </if>
+      <if test="kqMoney != null">
+        #{kqMoney,jdbcType=OTHER},
+      </if>
+      <if test="kqPsw != null">
+        #{kqPsw,jdbcType=VARCHAR},
+      </if>
+      <if test="kqYxq != null">
+        #{kqYxq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="fqMallName != null">
+        #{fqMallName,jdbcType=VARCHAR},
+      </if>
+      <if test="fqCkName != null">
+        #{fqCkName,jdbcType=VARCHAR},
+      </if>
+      <if test="hxMallName != null">
+        #{hxMallName,jdbcType=VARCHAR},
+      </if>
+      <if test="hxCkName != null">
+        #{hxCkName,jdbcType=VARCHAR},
+      </if>
+      <if test="hxMoney != null">
+        #{hxMoney,jdbcType=OTHER},
+      </if>
+      <if test="hxPerson != null">
+        #{hxPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="hxTime != null">
+        #{hxTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatPerson != null">
+        #{creatPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="chgTime != null">
+        #{chgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chgPerson != null">
+        #{chgPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="bzMemo != null">
+        #{bzMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="hxMemo != null">
+        #{hxMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="kqName != null">
+        #{kqName,jdbcType=VARCHAR},
+      </if>
+      <if test="hxDhId != null">
+        #{hxDhId,jdbcType=VARCHAR},
+      </if>
+      <if test="useTj != null">
+        #{useTj,jdbcType=VARCHAR},
+      </if>
+      <if test="xfMe != null">
+        #{xfMe,jdbcType=OTHER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mssql.model.KqInfo">
+    <!--@mbg.generated-->
+    update kq_info
+    <set>
+      <if test="kqMoney != null">
+        kq_Money = #{kqMoney,jdbcType=OTHER},
+      </if>
+      <if test="kqPsw != null">
+        kq_Psw = #{kqPsw,jdbcType=VARCHAR},
+      </if>
+      <if test="kqYxq != null">
+        kq_YXQ = #{kqYxq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        [state] = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="fqMallName != null">
+        fq_mall_name = #{fqMallName,jdbcType=VARCHAR},
+      </if>
+      <if test="fqCkName != null">
+        fq_ck_name = #{fqCkName,jdbcType=VARCHAR},
+      </if>
+      <if test="hxMallName != null">
+        hx_mall_name = #{hxMallName,jdbcType=VARCHAR},
+      </if>
+      <if test="hxCkName != null">
+        hx_ck_name = #{hxCkName,jdbcType=VARCHAR},
+      </if>
+      <if test="hxMoney != null">
+        hx_money = #{hxMoney,jdbcType=OTHER},
+      </if>
+      <if test="hxPerson != null">
+        hx_person = #{hxPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="hxTime != null">
+        hx_time = #{hxTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatPerson != null">
+        creat_person = #{creatPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="chgTime != null">
+        chg_time = #{chgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chgPerson != null">
+        chg_person = #{chgPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="bzMemo != null">
+        bz_Memo = #{bzMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="hxMemo != null">
+        hx_memo = #{hxMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="kqName != null">
+        kq_name = #{kqName,jdbcType=VARCHAR},
+      </if>
+      <if test="hxDhId != null">
+        hx_dh_id = #{hxDhId,jdbcType=VARCHAR},
+      </if>
+      <if test="useTj != null">
+        use_tj = #{useTj,jdbcType=VARCHAR},
+      </if>
+      <if test="xfMe != null">
+        xf_me = #{xfMe,jdbcType=OTHER},
+      </if>
+    </set>
+    where kq_ID = #{kqId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mssql.model.KqInfo">
+    <!--@mbg.generated-->
+    update kq_info
+    set kq_Money = #{kqMoney,jdbcType=OTHER},
+      kq_Psw = #{kqPsw,jdbcType=VARCHAR},
+      kq_YXQ = #{kqYxq,jdbcType=TIMESTAMP},
+      [state] = #{state,jdbcType=VARCHAR},
+      fq_mall_name = #{fqMallName,jdbcType=VARCHAR},
+      fq_ck_name = #{fqCkName,jdbcType=VARCHAR},
+      hx_mall_name = #{hxMallName,jdbcType=VARCHAR},
+      hx_ck_name = #{hxCkName,jdbcType=VARCHAR},
+      hx_money = #{hxMoney,jdbcType=OTHER},
+      hx_person = #{hxPerson,jdbcType=VARCHAR},
+      hx_time = #{hxTime,jdbcType=TIMESTAMP},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      creat_person = #{creatPerson,jdbcType=VARCHAR},
+      chg_time = #{chgTime,jdbcType=TIMESTAMP},
+      chg_person = #{chgPerson,jdbcType=VARCHAR},
+      bz_Memo = #{bzMemo,jdbcType=VARCHAR},
+      hx_memo = #{hxMemo,jdbcType=VARCHAR},
+      kq_name = #{kqName,jdbcType=VARCHAR},
+      hx_dh_id = #{hxDhId,jdbcType=VARCHAR},
+      use_tj = #{useTj,jdbcType=VARCHAR},
+      xf_me = #{xfMe,jdbcType=OTHER}
+    where kq_ID = #{kqId,jdbcType=VARCHAR}
+  </update>
+</mapper>
