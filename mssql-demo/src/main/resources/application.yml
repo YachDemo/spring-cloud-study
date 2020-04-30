@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:sqlserver://rm-wz900o6690zhg7uxkqo.sqlserver.rds.aliyuncs.com:1433;databasename=tikbee
+    username: tikbee
+    password: tikbee123456
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+server:
+  port: 8131
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false
+    cache-enabled: false
+  mapper-locations: classpath:mapper/*.xml
+  #  type-aliases-package: com.sunsco.entity.model
+  global-config:
+    db-config:
+      #      field-strategy: not_empty
+      table-underline: false
