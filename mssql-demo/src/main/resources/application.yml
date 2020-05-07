@@ -1,9 +1,9 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:sqlserver://rm-wz900o6690zhg7uxkqo.sqlserver.rds.aliyuncs.com:1433;databasename=tikbee
-    username: tikbee
-    password: tikbee123456
+    url: jdbc:sqlserver://192.168.0.187:1433;databasename=tikbee
+    username: sa
+    password: 123456
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 server:
   port: 8131
